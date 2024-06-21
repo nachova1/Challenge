@@ -1,0 +1,11 @@
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\controller\UsuarioController.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\dto\request\LoginRequestDTO.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\dto\request\RegistroRequestDTO.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\dto\response\LoginResponseDTO.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\dto\response\RegistroResponseDTO.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\entity\Usuario.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\exception\GlobalExceptionHandler.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\repository\UsuarioRepository.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\service\UsuarioService.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\serviceImpl\UsuarioServiceImpl.java
+C:\Users\Admin\Documents\NetBeansProjects\Test Assignment\src\main\java\com\testAssigment\TestAssigmentApplication.java

@@ -1,16 +1,17 @@
-/*Logica para manejar el formulario de login*/
+/*Funcion Logica para manejar el formulario de login*/
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
+    
+    // Obtener los valores de email y password del formulario
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-
+    // Crear el cuerpo de la solicitud
     const requestBody = {
         email: email,
         password: password
     };
 
-    /*Aca consumo la API de manera local*/
+    // Realizar la solicitud POST al endpoint /usuario/login
     fetch('http://localhost:8080/usuario/login', {
         method: 'POST',
         headers: {
@@ -18,15 +19,15 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         },
         body: JSON.stringify(requestBody)
     })
-    /*Se prepara la respuesta*/
     .then(response => {
+        // Convertir la respuesta a JSON y capturar el estado y datos
         return response.json().then(data => ({
             status: response.status,
             body: data
         }));
     })
-    /*Capturo el elemento y lo devuelvo*/
     .then(response => {
+        // Mostrar la respuesta según el estado recibido
         const responseDiv = document.getElementById('responseLogin');
         if (response.status === 200) {
             responseDiv.innerHTML = '<p>Inicio de sesión exitoso</p>';
@@ -34,30 +35,31 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             responseDiv.innerHTML = `<p>Error: Usuario/contraseña incorrectos</p>`;
         }
     })
-    /*Si surge una excepcion saltan a esta parte*/
+    /*Para las excepciones */
     .catch(error => {
-        console.error('Error:', error);
+        // Capturar y manejar cualquier error ocurrido durante la solicitud
         const responseDiv = document.getElementById('responseLogin');
         responseDiv.innerHTML = '<p>Error: ' + error.message + '</p>';
     });
 });
 
-/*Logica para el formulario de registro*/
+/*Funcion Logica para el formulario de registro*/
 document.getElementById('registroForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
+    // Obtener los valores de nombre, apellido, email y password del formulario
     const nombre = document.getElementById('nombre').value;
     const apellido = document.getElementById('apellido').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-
+    // Crear el cuerpo de la solicitud
     const requestBody = {
         nombre: nombre,
         apellido: apellido,
         email: email,
         password: password
     };
-    /*Consumo la API de manera local*/
+    // Realizar la solicitud POST al endpoint /usuario/registro
     fetch('http://localhost:8080/usuario/registro', {
         method: 'POST',
         headers: {
@@ -66,52 +68,61 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         body: JSON.stringify(requestBody)
     })
     .then(response => {
+        // Convertir la respuesta a JSON y capturar el estado y datos
         return response.json().then(data => ({
             status: response.status,
             body: data
         }));
     })
     .then(response => {
+        // Mostrar la respuesta según el estado recibido
         const responseDiv = document.getElementById('responseRegistro');
         if (response.status === 201) {
             responseDiv.innerHTML = '<p>Usuario registrado exitosamente</p>';
         } else {
-            let errorMessages = '<ul>';
-            for (const [message] of Object.entries(response.body)) {
-                errorMessages += `<p> ${message}</p>`;
-            }
-            errorMessages += '</ul>';
-            responseDiv.innerHTML = `<p>Error:</p> ${errorMessages}`;
+            // Mostrar el mensaje de error específico
+            const errorMessage = response.body.password;
+            responseDiv.innerHTML = `<p>Error: ${errorMessage}</p>`;
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        // Capturar y manejar cualquier error ocurrido durante la solicitud
         const responseDiv = document.getElementById('responseRegistro');
         responseDiv.innerHTML = '<p>Error: ' + error.message + '</p>';
     });
 });
 
+/* 
+  Función para mostrar el formulario de registro cuando se hace clic en "Registrar"
+ */
 document.getElementById('showRegistro').addEventListener('click', function() {
     document.getElementById('loginContainer').classList.add('hidden');
     document.getElementById('registroContainer').classList.remove('hidden');
 });
 
+/* 
+  Función para mostrar el formulario de login cuando se hace clic en "Volver al Login"
+ */
 document.getElementById('showLogin').addEventListener('click', function() {
     document.getElementById('registroContainer').classList.add('hidden');
     document.getElementById('loginContainer').classList.remove('hidden');
 });
 
+/* 
+  Función para manejar el evento de "Olvidé mi contraseña"
+ */
 document.getElementById('forgotPassword').addEventListener('click', function(event) {
     event.preventDefault();
 
+     // Obtener el valor del email ingresado para restablecer la contraseña
     const email = document.getElementById('loginEmail').value;
-
+    // Verificar si se ingresó un email válido
     if (!email) {
         const responseDiv = document.getElementById('responseLogin');
         responseDiv.innerHTML = '<p>Por favor, ingresa tu correo electrónico.</p>';
         return;
     }
-
+    // Realizar la solicitud POST al endpoint /usuario/restablecer-contrasena
     fetch('http://localhost:8080/usuario/restablecer-contrasena?email=' + encodeURIComponent(email), {
         method: 'POST',
         headers: {
@@ -119,12 +130,14 @@ document.getElementById('forgotPassword').addEventListener('click', function(eve
         }
     })
     .then(response => {
+        // Verificar si la solicitud fue exitosa
         if (!response.ok) {
             throw new Error('Error en la solicitud: ' + response.status);
         }
         return response.text(); // Recibir como texto en lugar de JSON
     })
     .then(data => {
+        // Mostrar el mensaje de éxito con la nueva contraseña generada
         const responseDiv = document.getElementById('responseLogin');
         responseDiv.innerHTML = '<p>' + data + '</p>'; // Mostrar el mensaje directamente
     })

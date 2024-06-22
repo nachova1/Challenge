@@ -75,17 +75,27 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         }));
     })
     .then(response => {
+        console.log(response);
         // Mostrar la respuesta según el estado recibido
         const responseDiv = document.getElementById('responseRegistro');
         if (response.status === 201) {
             responseDiv.innerHTML = '<p>Usuario registrado exitosamente</p>';
         } else {
-            // Mostrar el mensaje de error específico
-            const errorMessage = response.body.password;
+            // Verificar si el error es específico de la contraseña, del mail o si el usuario es existente
+            let errorMessage;
+            if (response.body.password) {
+                errorMessage = response.body.password;
+            } else if (response.body.email) {
+                errorMessage = response.body.email;
+            } else if(response.body.message){
+                errorMessage = response.body.message
+            }
+    
             responseDiv.innerHTML = `<p>Error: ${errorMessage}</p>`;
         }
     })
     .catch(error => {
+        
         // Capturar y manejar cualquier error ocurrido durante la solicitud
         const responseDiv = document.getElementById('responseRegistro');
         responseDiv.innerHTML = '<p>Error: ' + error.message + '</p>';
